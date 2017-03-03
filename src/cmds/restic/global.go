@@ -276,8 +276,6 @@ func OpenRepository(opts GlobalOptions) (*repository.Repository, error) {
 		return nil, err
 	}
 
-	s := repository.New(be)
-
 	if opts.password == "" {
 		opts.password, err = ReadPassword(opts, "enter password for repository: ")
 		if err != nil {
@@ -285,12 +283,12 @@ func OpenRepository(opts GlobalOptions) (*repository.Repository, error) {
 		}
 	}
 
-	err = s.SearchKey(opts.password, maxKeys)
+	repo, err := repository.Open(be, opts.password, maxKeys)
 	if err != nil {
 		return nil, errors.Fatalf("unable to open repo: %v", err)
 	}
 
-	return s, nil
+	return repo, nil
 }
 
 // Open the backend specified by a location config.
