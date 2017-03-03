@@ -34,7 +34,7 @@ func listKeys(s *repository.Repository) error {
 	defer close(done)
 
 	for id := range s.List(restic.KeyFile, done) {
-		k, err := repository.LoadKey(s, id.String())
+		k, err := repository.LoadKey(s.Backend(), id.String())
 		if err != nil {
 			Warnf("LoadKey() failed: %v\n", err)
 			continue
