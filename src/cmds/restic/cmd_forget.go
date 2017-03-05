@@ -35,6 +35,7 @@ type ForgetOptions struct {
 	KeepTags []string
 
 	Hostname string
+	Paths    []string
 	Tags     []string
 
 	DryRun bool
@@ -56,6 +57,7 @@ func init() {
 
 	f.StringSliceVar(&forgetOptions.KeepTags, "keep-tag", []string{}, "always keep snapshots with this `tag` (can be specified multiple times)")
 	f.StringVar(&forgetOptions.Hostname, "hostname", "", "only forget snapshots for the given hostname")
+	f.StringSliceVar(&forgetOptions.Paths, "path", []string{}, "only forget snapshots for the given `path` (can be specified multiple times)")
 	f.StringSliceVar(&forgetOptions.Tags, "tag", []string{}, "only forget snapshots with the `tag` (can be specified multiple times)")
 
 	f.BoolVarP(&forgetOptions.DryRun, "dry-run", "n", false, "do not delete anything, just print what would be done")
@@ -177,6 +179,10 @@ func runForget(opts ForgetOptions, gopts GlobalOptions, args []string) error {
 
 	for _, sn := range snapshots {
 		if opts.Hostname != "" && sn.Hostname != opts.Hostname {
+			continue
+		}
+
+		if len(opts.Paths) > 0 && !restic.SamePaths(opts.Paths, sn.Paths) {
 			continue
 		}
 

@@ -727,9 +727,10 @@ The `forget` command accepts the following parameters:
    (can be specified multiple times).
 
 Additionally, you can restrict removing snapshots to those which have a
-particular hostname with the `--hostname` parameter, or tags with the `--tag`
-option. When multiple tags are specified, only the snapshots which have all the
-tags are considered.
+particular hostname with the `--hostname` parameter, a particular path with the
+`--path` parameter, or tags with the `--tag` option. When multiple tags or
+paths are specified, only the snapshots which have all the tags and paths are
+considered.
 
 All the `--keep-*` options above only count hours/days/weeks/months/years which
 have a snapshot, so those without a snapshot are ignored.
